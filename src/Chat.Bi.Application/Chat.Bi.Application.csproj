@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chat.Bi.Core\Chat.Bi.Core.csproj" />
+    <ProjectReference Include="..\Chat.Bi.Infrastructure\Chat.Bi.Infrastructure.csproj" />
+    <ProjectReference Include="..\Chat.Bi.SharedKernel\Chat.Bi.SharedKernel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+  </ItemGroup>
+
+</Project>
