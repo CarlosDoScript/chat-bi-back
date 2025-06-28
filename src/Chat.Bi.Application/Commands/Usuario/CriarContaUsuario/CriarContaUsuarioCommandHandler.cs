@@ -7,7 +7,7 @@ public sealed class CriarContaUsuarioCommandHandler(
     ChatBiDbContext context
 ) : IRequestHandler<CriarContaUsuarioCommand, Resultado<int>>
 {
-    public async Task<Resultado<int>> Handle(CriarContaUsuarioCommand usuarioCommand)
+    public async Task<Resultado<int>> Handle(CriarContaUsuarioCommand usuarioCommand, CancellationToken cancellationToken)
     {
         if (await usuarioRepository.ExisteAsync(usuarioCommand.Documento.FormatarCpfOuCnpj(), usuarioCommand.Email))
             return Resultado<int>.Falhar("Já existe um usuário com este documento ou email.");

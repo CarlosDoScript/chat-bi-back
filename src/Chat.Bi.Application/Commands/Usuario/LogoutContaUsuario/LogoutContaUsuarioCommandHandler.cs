@@ -5,7 +5,7 @@ IUsuarioAutenticadoService usuarioAutenticado,
 IUsuarioRepository usuariosRepository
 ) : IRequestHandler<LogoutContaUsuarioCommand, Resultado>
 {
-    public async Task<Resultado> Handle(LogoutContaUsuarioCommand request)
+    public async Task<Resultado> Handle(LogoutContaUsuarioCommand request, CancellationToken cancellationToken)
     {        
         var usuario = await usuariosRepository.ObterPorIdAsync(usuarioAutenticado.ObterId(), nameof(Core.Entities.Usuario.Id));
 

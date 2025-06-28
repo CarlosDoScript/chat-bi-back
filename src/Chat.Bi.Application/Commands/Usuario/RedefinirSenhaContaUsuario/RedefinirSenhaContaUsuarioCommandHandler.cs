@@ -5,7 +5,7 @@ public sealed class RedefinirSenhaContaUsuarioCommandHandler(
     IAuthService authService
 ) : IRequestHandler<RedefinirSenhaContaUsuarioCommand, Resultado>
 {
-    public async Task<Resultado> Handle(RedefinirSenhaContaUsuarioCommand request)
+    public async Task<Resultado> Handle(RedefinirSenhaContaUsuarioCommand request, CancellationToken cancellationToken)
     {
         var usuario = await usuariosRepository.ObterPorAsync(x => x.RecuperacaoAcessoCodigo == request.Token && x.Ativo);
 

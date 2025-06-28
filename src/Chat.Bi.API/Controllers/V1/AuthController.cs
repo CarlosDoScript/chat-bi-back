@@ -10,14 +10,14 @@ namespace Chat.Bi.API.Controllers.V1;
 
 [Route("api/v1/acesso")]
 public class AuthController(
-    Mediator mediator
+    IMediator mediator
 )
  : ApiV1Controller
 {
     [HttpPost("criar-conta"),AllowAnonymous]
     public async Task<IActionResult> CriarContaAsync([FromBody] CriarContaUsuarioCommand command)
     {
-        var resultado = await mediator.SendAsync(command);
+        var resultado = await mediator.Send(command);
 
         if (resultado.ContemErros)
             return BadRequest(resultado);
@@ -25,10 +25,10 @@ public class AuthController(
         return Ok(resultado);
     }
 
-    [AllowAnonymous, HttpPost("esqueci-senha")]
+    [HttpPost("esqueci-senha"),AllowAnonymous]
     public async Task<IActionResult> EsqueciSenhaAsync([FromBody] EsqueciSenhaContaUsuarioCommand command)
     {
-        var resultado = await mediator.SendAsync(command);
+        var resultado = await mediator.Send(command);
 
         if (resultado.ContemErros)
             return BadRequest(resultado);
@@ -36,10 +36,10 @@ public class AuthController(
         return Ok();
     }
 
-    [AllowAnonymous, HttpGet("validar-token-recuperacao")]
+    [HttpGet("validar-token-recuperacao"),AllowAnonymous]
     public async Task<IActionResult> ValidarTokenRecuperacaoAsync(ValidarTokenRecuperacaoContaUsuarioQuery query)
     {
-        var resultado = await mediator.SendAsync(query);
+        var resultado = await mediator.Send(query);
 
         if (resultado.ContemErros)
             return BadRequest(resultado);
@@ -47,10 +47,10 @@ public class AuthController(
         return Ok();
     }
 
-    [AllowAnonymous, HttpPost("redefinir-senha")]
+    [HttpPost("redefinir-senha"),AllowAnonymous]
     public async Task<IActionResult> RedefinirSenhaAsync([FromBody] RedefinirSenhaContaUsuarioCommand command)
     {
-        var resultado = await mediator.SendAsync(command);
+        var resultado = await mediator.Send(command);
 
         if (resultado.ContemErros)
             return BadRequest(resultado);
@@ -58,10 +58,10 @@ public class AuthController(
         return Ok();
     }
 
-    [AllowAnonymous, HttpPost("login")]
+    [HttpPost("login"),AllowAnonymous]
     public async Task<IActionResult> LoginAsync([FromBody] LoginContaUsuarioCommand command)
     {
-        var resultado = await mediator.SendAsync(command);
+        var resultado = await mediator.Send(command);
 
         if (resultado.ContemErros)
             return BadRequest(resultado);
@@ -69,10 +69,10 @@ public class AuthController(
         return Ok(resultado);
     }
 
-    [AllowAnonymous, HttpPost("refresh-token")]
+    [HttpPost("refresh-token"),AllowAnonymous]
     public async Task<IActionResult> RefreshTokenAsync([FromBody] RefreshTokenContaUsuarioCommand command)
     {
-        var resultado = await mediator.SendAsync(command);
+        var resultado = await mediator.Send(command);
 
         if (resultado.ContemErros)
             return Unauthorized(resultado);
@@ -83,7 +83,7 @@ public class AuthController(
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {
-        await mediator.SendAsync(new LogoutContaUsuarioCommand());
+        await mediator.Send(new LogoutContaUsuarioCommand());
         return Ok();
     }
 }

@@ -6,8 +6,6 @@ using Chat.Bi.Infrastructure.Configuration;
 using Chat.Bi.Infrastructure.Logging;
 using Chat.Bi.Infrastructure.Persistence;
 using Chat.Bi.Infrastructure.Persistence.Repositories;
-using Chat.Bi.SharedKernel.Cqrs.Implementations;
-using Chat.Bi.SharedKernel.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,16 +17,9 @@ public static class DependencyInjection
     public static IServiceCollection ResolveDependencias(this IServiceCollection services, IConfiguration configuration)
     {
         ResolveConexaoBanco(services, configuration);
-        Infraestrutura(services, configuration);
-        SharedKernel(services);
+        Infraestrutura(services, configuration);        
 
         return services;
-    }
-
-    static void SharedKernel(IServiceCollection services)
-    {
-        services.AddScoped<Mediator>();
-        services.AddRequestHandlersFromAssembly(typeof(CriarContaUsuarioCommand).Assembly);
     }
 
     static void Infraestrutura(IServiceCollection services, IConfiguration configuration)
@@ -37,6 +28,7 @@ public static class DependencyInjection
         services.AddTransient<IAuthService, AuthService>();
         services.AddScoped<IUsuarioAutenticadoService, UsuarioAutenticadoService>();
         services.AddSingleton(typeof(IAppLogger<>), typeof(AppLogger<>));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CriarContaUsuarioCommand).Assembly));
         ResolverRepository(services);
     }
 

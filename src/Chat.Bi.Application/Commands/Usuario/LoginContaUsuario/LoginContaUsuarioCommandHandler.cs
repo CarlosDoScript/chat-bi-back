@@ -5,7 +5,7 @@ public sealed class LoginContaUsuarioCommandHandler(
     IUsuarioRepository usuariosRepository
 ) : IRequestHandler<LoginContaUsuarioCommand, Resultado<LoginUsuarioViewModel>>
 {
-    public async Task<Resultado<LoginUsuarioViewModel>> Handle(LoginContaUsuarioCommand command)
+    public async Task<Resultado<LoginUsuarioViewModel>> Handle(LoginContaUsuarioCommand command, CancellationToken cancellationToken)
     {
         var senha = authService.GerarSha256Hash(command.Senha);
 

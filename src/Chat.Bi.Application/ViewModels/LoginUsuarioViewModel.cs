@@ -1,28 +1,18 @@
 ﻿namespace Chat.Bi.Application.ViewModels;
 
-public record LoginUsuarioViewModel
+public record LoginUsuarioViewModel(
+    string nomeCompleto,
+    string email,
+    string token,
+    string refreshToken,
+    string documento,
+    DateTime dataNascimento
+)
 {
-    public LoginUsuarioViewModel(
-        string nomeCompleto,
-        string email,
-        string token,
-        string refreshToken,
-        string documento,
-        DateTime dataNascimento
-    )
-    {
-        NomeCompleto = nomeCompleto;
-        Email = email;
-        Token = token;
-        Documento = documento;
-        DataNascimento = dataNascimento;
-        RefreshToken = refreshToken;
-    }
-
-    public string NomeCompleto { get; init; }
-    public string Token { get; init; }
-    public string RefreshToken { get; init; }
-    public string Email { get; init; }
-    public string Documento { get; init; }
-    public DateTime DataNascimento { get; init; }
+    public string NomeCompleto { get; init; } = nomeCompleto;
+    public string Token { get; init; } = token;
+    public string RefreshToken { get; init; } = refreshToken;
+    public string Email { get; init; } = email;
+    public string Documento { get; init; } = documento;
+    public DateTime DataNascimento { get; init; } = dataNascimento;
 }

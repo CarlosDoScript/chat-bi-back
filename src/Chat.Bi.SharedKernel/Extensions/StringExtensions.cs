@@ -234,4 +234,11 @@ public static class StringExtensions
             return false;
         }
     }
+
+    public static bool SenhaValida(this string senha)
+    {
+        var regex = new Regex(@"^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!*@#$%^&+=]).*$");
+
+        return regex.IsMatch(senha);
+    }
 }

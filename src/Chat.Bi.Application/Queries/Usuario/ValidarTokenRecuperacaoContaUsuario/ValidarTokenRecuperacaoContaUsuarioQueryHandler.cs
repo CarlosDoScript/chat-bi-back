@@ -4,7 +4,7 @@ public sealed class ValidarTokenRecuperacaoContaUsuarioQueryHandler(
     IUsuarioRepository usuariosRepository
 ) : IRequestHandler<ValidarTokenRecuperacaoContaUsuarioQuery, Resultado>
 {
-    public async Task<Resultado> Handle(ValidarTokenRecuperacaoContaUsuarioQuery request)
+    public async Task<Resultado> Handle(ValidarTokenRecuperacaoContaUsuarioQuery request, CancellationToken cancellationToken)
     {
         var usuario = await usuariosRepository.ObterPorAsync(x => x.RecuperacaoAcessoCodigo == request.Token);
 

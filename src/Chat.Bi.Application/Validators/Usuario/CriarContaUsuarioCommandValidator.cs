@@ -25,7 +25,7 @@ public class CriarContaUsuarioCommandValidator : AbstractValidator<CriarContaUsu
             .WithMessage("Documento inválido.");
 
         RuleFor(x => x.Senha)
-            .Must(SenhaValida)
+            .Must(senha => senha.SenhaValida())
             .WithMessage("Senha deve conter pelo menos 8 caracteres, um número, uma letra maiúscula, uma minúscula, e um caractere especial.");
 
         RuleFor(x => x.DataNascimento)
@@ -35,12 +35,5 @@ public class CriarContaUsuarioCommandValidator : AbstractValidator<CriarContaUsu
         RuleFor(x => x.IdPlano)
             .NotEmpty()
             .WithMessage("Plano é obrigatório.");
-    }
-
-    static bool SenhaValida(string senha)
-    {
-        var regex = new Regex(@"^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!*@#$%^&+=]).*$");
-
-        return regex.IsMatch(senha);
-    }
+    }  
 }

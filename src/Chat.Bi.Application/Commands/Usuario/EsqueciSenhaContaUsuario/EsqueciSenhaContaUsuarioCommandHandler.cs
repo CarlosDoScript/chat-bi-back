@@ -8,7 +8,7 @@ public sealed class EsqueciSenhaContaUsuarioCommandHandler(
     IConfiguration configuration
 ) : IRequestHandler<EsqueciSenhaContaUsuarioCommand, Resultado>
 {
-    public async Task<Resultado> Handle(EsqueciSenhaContaUsuarioCommand request)
+    public async Task<Resultado> Handle(EsqueciSenhaContaUsuarioCommand request, CancellationToken cancellationToken)
     {
         var usuario = await usuariosRepository.ObterPorAsync(x => x.Email == request.Email && x.Ativo);
 

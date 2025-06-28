@@ -6,7 +6,7 @@ public sealed class CriarUsuarioCommandHandler(
         IUsuarioAutenticadoService usuarioAutenticadoService
     ) : IRequestHandler<CriarUsuarioCommand, Resultado<int>>
 {
-    public async Task<Resultado<int>> Handle(CriarUsuarioCommand usuarioCommand)
+    public async Task<Resultado<int>> Handle(CriarUsuarioCommand usuarioCommand, CancellationToken cancellationToken)
     {
         if (await usuarioRepository.ExisteAsync(usuarioCommand.Documento.FormatarCpfOuCnpj(), usuarioCommand.Email))
             return Resultado<int>.Falhar("Já existe usuário com este documento ou email.");

@@ -144,6 +144,23 @@ public class Usuario : BaseEntity
         return Resultado<Usuario>.Ok(usuario);
     }
 
+    public void Alterar(
+        string nome,
+        string email,
+        string documento,
+        DateTime dataNascimento,
+        bool admin,
+        bool ativo
+    )
+    {
+        Nome = nome.FormatarNome();
+        Email = email;
+        Documento = documento.FormatarCpfOuCnpj();
+        DataNascimento = dataNascimento;        
+        Admin = admin;
+        Ativo = ativo;
+    }
+
     public void SetUltimoLogin()
         => UltimoLogin = DateTime.UtcNow;
 

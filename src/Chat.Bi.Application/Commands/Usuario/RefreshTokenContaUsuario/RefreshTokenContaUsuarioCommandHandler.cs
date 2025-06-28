@@ -5,7 +5,7 @@ IUsuarioRepository usuariosRepository,
 IAuthService authService
 ) : IRequestHandler<RefreshTokenContaUsuarioCommand, Resultado<RefreshTokenViewModel>>
 {
-    public async Task<Resultado<RefreshTokenViewModel>> Handle(RefreshTokenContaUsuarioCommand request)
+    public async Task<Resultado<RefreshTokenViewModel>> Handle(RefreshTokenContaUsuarioCommand request, CancellationToken cancellationToken)
     {
         var usuario = await usuariosRepository.ObterPorAsync(x => x.RefreshToken == request.RefreshToken);
 

@@ -23,9 +23,12 @@ public class UsuarioAutenticadoService(IHttpContextAccessor httpContextAccessor)
             .HttpContext?
             .User?
             .Claims
-            .FirstOrDefault(c => c.Type == TiposClaims.id)?.Value;
+            .FirstOrDefault(c => c.Type == TiposClaims.Id)?.Value;
 
-        _id = int.TryParse(idClaim, out var id) ? id : 0;
+        if (!int.TryParse(idClaim, out var id) || id <= 0)
+            throw new UnauthorizedAccessException("ID do usuário inválido.");
+
+        _id = id;
         return _id.Value;
     }
 
@@ -38,7 +41,7 @@ public class UsuarioAutenticadoService(IHttpContextAccessor httpContextAccessor)
             .HttpContext?
             .User?
             .Claims
-            .FirstOrDefault(c => c.Type == TiposClaims.id_empresa)?.Value;
+            .FirstOrDefault(c => c.Type == TiposClaims.IdEmpresa)?.Value;
 
         _idEmpresa = int.TryParse(idClaim, out var id) ? id : 0;
         return _idEmpresa.Value;
@@ -49,14 +52,17 @@ public class UsuarioAutenticadoService(IHttpContextAccessor httpContextAccessor)
         if (_idUsuarioAdmin.HasValue)
             return _idUsuarioAdmin.Value;
 
-        var idClaim = httpContextAccessor
-            .HttpContext?
-            .User?
-            .Claims
-            .FirstOrDefault(c => c.Type == TiposClaims.id_usuario_admin)?.Value;
+        var httpContext = httpContextAccessor.HttpContext;
+        var user = httpContext?.User;
 
-        _id = int.TryParse(idClaim, out var id) ? id : 0;
-        return _id.Value;
+        var idClaim = user?.Claims.FirstOrDefault(c => c.Type == TiposClaims.IdUsuarioAdmin)?.Value;
+
+        if (int.TryParse(idClaim, out var id))
+            _idUsuarioAdmin = id;
+        else
+            _idUsuarioAdmin = ObterId();
+
+        return _idUsuarioAdmin.Value;
     }
 
     public bool EhMaster()
@@ -68,24 +74,24 @@ public class UsuarioAutenticadoService(IHttpContextAccessor httpContextAccessor)
             .HttpContext?
             .User?
             .Claims
-            .FirstOrDefault(c => c.Type == TiposClaims.master)?.Value;
+            .FirstOrDefault(c => c.Type == TiposClaims.Master)?.Value;
 
         _ehMaster = masterClaim == "1" ? true : false;
         return _ehMaster.Value;
     }
-  
+
     public bool EhAdmin()
     {
         if (_ehAdmin.HasValue)
             return _ehAdmin.Value;
 
-        var masterClaim = httpContextAccessor
+        var adminClaim = httpContextAccessor
             .HttpContext?
             .User?
             .Claims
-            .FirstOrDefault(c => c.Type == TiposClaims.admin)?.Value;
+            .FirstOrDefault(c => c.Type == TiposClaims.Admin)?.Value;
 
-        _ehAdmin = masterClaim == "1" ? true : false;
+        _ehAdmin = adminClaim == "1" ? true : false;
         return _ehAdmin.Value;
     }
 
@@ -95,7 +101,7 @@ public class UsuarioAutenticadoService(IHttpContextAccessor httpContextAccessor)
             .HttpContext?
             .User?
             .Claims
-            .FirstOrDefault(c => c.Type == TiposClaims.nome)?.Value;
+            .FirstOrDefault(c => c.Type == TiposClaims.Nome)?.Value;
     }
 
     public bool EhAutenticado()
@@ -115,5 +121,5 @@ public class UsuarioAutenticadoService(IHttpContextAccessor httpContextAccessor)
             .Claims
             .FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?
             .Value;
-    }   
+    }
 }
