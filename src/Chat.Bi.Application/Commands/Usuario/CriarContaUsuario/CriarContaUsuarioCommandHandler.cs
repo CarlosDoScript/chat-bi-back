@@ -9,7 +9,7 @@ public sealed class CriarContaUsuarioCommandHandler(
 {
     public async Task<Resultado<int>> Handle(CriarContaUsuarioCommand usuarioCommand, CancellationToken cancellationToken)
     {
-        if (await usuarioRepository.ExisteAsync(usuarioCommand.Documento.FormatarCpfOuCnpj(), usuarioCommand.Email))
+        if (await usuarioRepository.ExisteAsync(x => x.Documento == usuarioCommand.Documento.FormatarComoCnpj() && x.Email == usuarioCommand.Email))
             return Resultado<int>.Falhar("Já existe um usuário com este documento ou email.");
 
         var resultadoEmpresa = Empresa.Criar(

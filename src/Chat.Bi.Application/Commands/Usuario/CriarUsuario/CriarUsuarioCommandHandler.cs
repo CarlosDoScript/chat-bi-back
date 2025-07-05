@@ -8,7 +8,7 @@ public sealed class CriarUsuarioCommandHandler(
 {
     public async Task<Resultado<int>> Handle(CriarUsuarioCommand usuarioCommand, CancellationToken cancellationToken)
     {
-        if (await usuarioRepository.ExisteAsync(usuarioCommand.Documento.FormatarCpfOuCnpj(), usuarioCommand.Email))
+        if (await usuarioRepository.ExisteAsync(x => x.Documento == usuarioCommand.Documento.FormatarComoCnpj() && x.Email == usuarioCommand.Email))
             return Resultado<int>.Falhar("Já existe usuário com este documento ou email.");
 
         var senhaHash = authService.GerarSha256Hash(usuarioCommand.Senha);

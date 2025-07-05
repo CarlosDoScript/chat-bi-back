@@ -19,7 +19,7 @@ public class PlanoConfiguration : IEntityTypeConfiguration<Plano>
             .IsRequired();
 
         builder
-            .Property(x => x.ValorMensal)
+            .Property(x => x.Valor)
             .HasColumnType("DECIMAL(18,2)")
             .IsRequired();
     }

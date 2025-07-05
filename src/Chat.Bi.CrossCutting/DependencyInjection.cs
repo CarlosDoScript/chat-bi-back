@@ -37,6 +37,7 @@ public static class DependencyInjection
         services.AddTransient(typeof(IBaseEntityRepository<,>), typeof(BaseEntityRepository<,>));
         services.AddTransient<IUsuarioRepository, UsuarioRepository>();
         services.AddTransient<IEmpresaRepository, EmpresaRepository>();
+        services.AddTransient<IChatConfigRepository, ChatConfigRepository>();
     }
 
     static void ResolveConexaoBanco(IServiceCollection services, IConfiguration configuration)

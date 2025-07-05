@@ -1,7 +1,5 @@
 using Chat.Bi.API.Extensions;
 using Chat.Bi.Application.Commands.Usuario.CriarContaUsuario;
-using Chat.Bi.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +33,7 @@ app.Run();
 static IServiceScope Migration(WebApplication app)
 {
     var scope = app.Services.CreateScope();
-    var context = scope.ServiceProvider.GetRequiredService<ChatBiDbContext>();
-    context.Database.Migrate();
+    //var context = scope.ServiceProvider.GetRequiredService<ChatBiDbContext>();
+    //context.Database.Migrate();
     return scope;
 }
