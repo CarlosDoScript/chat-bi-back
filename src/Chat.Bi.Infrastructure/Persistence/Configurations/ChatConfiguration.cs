@@ -24,6 +24,9 @@ public class ChatConfiguration : IEntityTypeConfiguration<Core.Entities.Chat>
             .HasIndex(x => x.IdIntegracaoApi);
 
         builder
+            .HasIndex(x => x.ContextoAnteriorId);
+
+        builder
             .Property(x => x.TextoPergunta)
             .HasColumnType("TEXT")
             .IsRequired();
@@ -36,6 +39,20 @@ public class ChatConfiguration : IEntityTypeConfiguration<Core.Entities.Chat>
         builder            
             .Property(x => x.DataHora)            
             .HasColumnType("TIMESTAMPTZ")            
+            .IsRequired();
+
+        builder.Property(x => x.Origem)
+            .HasMaxLength(50)
+            .IsRequired();
+
+        builder.Property(x => x.Status)
+            .HasMaxLength(50)
+            .IsRequired();
+
+        builder.Property(x => x.TokensConsumidos)
+            .IsRequired();
+        
+        builder.Property(x => x.DuracaoRespostaMs)
             .IsRequired();
 
         builder
@@ -55,6 +72,12 @@ public class ChatConfiguration : IEntityTypeConfiguration<Core.Entities.Chat>
             .HasOne(x => x.IntegracaoApi)
             .WithMany()
             .HasForeignKey(x => x.IdIntegracaoApi)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder
+            .HasOne(x => x.ContextoAnterior)
+            .WithMany(x => x.RespostasFilhas)
+            .HasForeignKey(x => x.ContextoAnteriorId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
