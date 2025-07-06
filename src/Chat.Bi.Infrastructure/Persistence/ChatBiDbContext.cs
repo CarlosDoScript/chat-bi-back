@@ -21,7 +21,7 @@ public partial class ChatBiDbContext
     public DbSet<Empresa> Empresa => Set<Empresa>();
     public DbSet<IntegracaoApi> IntegracaoApi => Set<IntegracaoApi>();
     public DbSet<Pagamento> Pagamento => Set<Pagamento>();
-    public DbSet<Core.Entities.Chat> Pergunta => Set<Core.Entities.Chat>();
+    public DbSet<Core.Entities.Chat> Chat => Set<Core.Entities.Chat>();
     public DbSet<Plano> Plano => Set<Plano>();
     public DbSet<Usuario> Usuario => Set<Usuario>();
 }
