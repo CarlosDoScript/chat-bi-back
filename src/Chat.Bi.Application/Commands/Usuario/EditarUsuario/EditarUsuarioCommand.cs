@@ -1,4 +1,6 @@
-﻿namespace Chat.Bi.Application.Commands.Usuario.EditarUsuario;
+﻿using Chat.Bi.Application.ViewModels.Usuario;
+
+namespace Chat.Bi.Application.Commands.Usuario.EditarUsuario;
 
 public class EditarUsuarioCommand : IRequest<Resultado<UsuarioViewModel>>
 {

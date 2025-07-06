@@ -5,9 +5,9 @@ public sealed class Resultado<T>
     public bool Sucesso => !Erros.Any();
     public bool ContemErros => Erros.Any();
     public IReadOnlyCollection<string> Erros { get; }
-    public T? Valor { get; }
+    public T Valor { get; }
 
-    private Resultado(T? valor, List<string> erros)
+    private Resultado(T valor, List<string> erros)
     {
         Valor = valor;
         Erros = erros;

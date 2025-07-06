@@ -32,9 +32,7 @@ public sealed class CriarChatConfigCommandHandler(
 
     async Task<Resultado> VerificarExisteChatCriadoCanal(string canal)
     {
-        var idEmpresa = usuarioAutenticadoService.ObterIdEmpresa();
-
-        var existeCanal = await chatConfigRepository.ExisteAsync(x => x.IdEmpresa == idEmpresa && x.Canal == canal);
+        var existeCanal = await chatConfigRepository.ExisteAsync(x => x.IdEmpresa == usuarioAutenticadoService.ObterIdEmpresa() && x.Canal == canal);
 
         if (existeCanal)
             return Resultado.Falhar($"Já existe uma configuração de chat criado para o canal {canal}");

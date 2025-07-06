@@ -1,4 +1,6 @@
-﻿namespace Chat.Bi.Application.Queries.Usuario.ListarUsuario;
+﻿using Chat.Bi.Application.ViewModels.Usuario;
+
+namespace Chat.Bi.Application.Queries.Usuario.ListarUsuario;
 
 public sealed class ListarUsuarioQueryHandler(
         IUsuarioRepository usuarioRepository,

@@ -1,4 +1,6 @@
-﻿namespace Chat.Bi.Application.Commands.Usuario.EditarUsuario;
+﻿using Chat.Bi.Application.ViewModels.Usuario;
+
+namespace Chat.Bi.Application.Commands.Usuario.EditarUsuario;
 
 public sealed class EditarUsuarioCommandHandler(
     IUsuarioRepository usuarioRepository

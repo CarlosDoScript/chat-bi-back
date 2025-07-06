@@ -1,4 +1,4 @@
-﻿namespace Chat.Bi.Application.ViewModels;
+﻿namespace Chat.Bi.Application.ViewModels.Usuario;
 
 public record UsuarioViewModel(
     int id,

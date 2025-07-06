@@ -1,4 +1,6 @@
-﻿namespace Chat.Bi.Application.Commands.Usuario.LoginContaUsuario;
+﻿using Chat.Bi.Application.ViewModels.Usuario;
+
+namespace Chat.Bi.Application.Commands.Usuario.LoginContaUsuario;
 
 public class LoginContaUsuarioCommand : IRequest<Resultado<LoginUsuarioViewModel>>
 {
