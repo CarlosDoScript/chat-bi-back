@@ -1,11 +1,11 @@
 ﻿namespace Chat.Bi.Infrastructure.Persistence.Configurations;
 
-public class PerguntaConfiguration : IEntityTypeConfiguration<Pergunta>
+public class ChatConfiguration : IEntityTypeConfiguration<Core.Entities.Chat>
 {
-    public void Configure(EntityTypeBuilder<Pergunta> builder)
+    public void Configure(EntityTypeBuilder<Core.Entities.Chat> builder)
     {
         builder
-            .ToTable(nameof(Pergunta))
+            .ToTable(nameof(Core.Entities.Chat))
             .HasKey(x => x.Id);
 
         builder

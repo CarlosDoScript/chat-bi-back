@@ -1,6 +1,6 @@
 ﻿namespace Chat.Bi.Core.Entities;
 
-public class Pergunta : BaseEntity
+public class Chat : BaseEntity
 {
     public string TextoPergunta { get; private set; }
     public string TextoResposta { get; private set; }
