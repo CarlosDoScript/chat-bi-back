@@ -6,6 +6,8 @@ using Chat.Bi.Infrastructure.Configuration;
 using Chat.Bi.Infrastructure.Logging;
 using Chat.Bi.Infrastructure.Persistence;
 using Chat.Bi.Infrastructure.Persistence.Repositories;
+using Chat.Bi.SharedKernel.Configuration;
+using Chat.Bi.SharedKernel.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,9 +19,16 @@ public static class DependencyInjection
     public static IServiceCollection ResolveDependencias(this IServiceCollection services, IConfiguration configuration)
     {
         ResolveConexaoBanco(services, configuration);
-        Infraestrutura(services, configuration);        
-
+        Infraestrutura(services, configuration);
+        SharedKernel(configuration);
         return services;
+    }
+
+    static void SharedKernel(IConfiguration configuration)
+    {
+        var criptografia = configuration.GetSection(nameof(CriptografiaSettings));
+        var criptografiaSettings = criptografia.Get<CriptografiaSettings>();
+        CriptografiaExtensions.Configure(criptografiaSettings);
     }
 
     static void Infraestrutura(IServiceCollection services, IConfiguration configuration)
@@ -39,6 +48,7 @@ public static class DependencyInjection
         services.AddTransient<IEmpresaRepository, EmpresaRepository>();
         services.AddTransient<IChatRepository, ChatRepository>();
         services.AddTransient<IChatConfigRepository, ChatConfigRepository>();
+        services.AddTransient<IBaseDeDadosRepository, BaseDeDadosRepository>();
     }
 
     static void ResolveConexaoBanco(IServiceCollection services, IConfiguration configuration)
