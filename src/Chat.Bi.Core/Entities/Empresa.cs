@@ -59,5 +59,5 @@ public class Empresa : BaseEntity
     public string Status { get; private set; }
     public DateTime? AlteradoEm { get; private set; }
 
-    public virtual Plano Plano { get; set; }
+    public virtual Plano Plano { get; private set; }
 }
