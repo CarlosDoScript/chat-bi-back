@@ -18,7 +18,7 @@ IAuthService authService
 
         await usuariosRepository.SalvarAsync();
 
-        var refreshTokenViewModel = new RefreshTokenViewModel(tokens.Token, tokens.RefreshToken, usuario.RefreshTokenExpiracao.Value);
+        var refreshTokenViewModel = new RefreshTokenViewModel(tokens.JwtToken, tokens.RefreshToken, usuario.RefreshTokenExpiracao.Value);
 
         return Resultado<RefreshTokenViewModel>.Ok(refreshTokenViewModel);
     }

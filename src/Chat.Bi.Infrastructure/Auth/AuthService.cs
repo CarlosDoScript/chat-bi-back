@@ -14,7 +14,7 @@ public class AuthService(
     IConfiguration configuration
     ) : IAuthService
 {
-    public async Task<AuthToken> GerarTokensAsync(Usuario usuario)
+    public async Task<(string JwtToken, string RefreshToken)> GerarTokensAsync(Usuario usuario)
     {
         var jwtToken = await GerarJwtTokenAsync(usuario);
 
@@ -22,7 +22,7 @@ public class AuthService(
 
         usuario.SetRefreshToken(refreshToken, DateTime.UtcNow.AddDays(7));
 
-        return new AuthToken(jwtToken, refreshToken);
+        return (jwtToken, refreshToken);
     }
 
     Task<string> GerarJwtTokenAsync(Usuario usuario)

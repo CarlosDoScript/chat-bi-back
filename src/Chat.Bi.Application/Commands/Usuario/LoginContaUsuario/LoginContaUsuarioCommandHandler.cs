@@ -21,7 +21,7 @@ public sealed class LoginContaUsuarioCommandHandler(
         var usuarioViewModel = new LoginUsuarioViewModel(
             usuario.Nome,
             command.Email,
-            tokens.Token,
+            tokens.JwtToken,
             tokens.RefreshToken,
             usuario.Documento,
             usuario.DataNascimento
