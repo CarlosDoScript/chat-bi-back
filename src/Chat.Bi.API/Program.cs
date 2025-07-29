@@ -1,4 +1,5 @@
 using Chat.Bi.API.Extensions;
+using Chat.Bi.API.Middlewares;
 using Chat.Bi.Application.Commands.Usuario.CriarContaUsuario;
 using Chat.Bi.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.Run();
 
 static IServiceScope Migration(WebApplication app)
