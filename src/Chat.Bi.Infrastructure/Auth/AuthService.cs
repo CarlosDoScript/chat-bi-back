@@ -46,8 +46,8 @@ public class AuthService(
             new Claim(TiposClaims.IdEmpresa, usuario.IdEmpresa.ToString())
         };
 
-        if (usuario.Admin)
-            claims.Add(new Claim(TiposClaims.IdUsuarioAdmin, usuario.Id.ToString()));
+        if (usuario.IdUsuarioAdmin.HasValue)
+            claims.Add(new Claim(TiposClaims.IdUsuarioAdmin, usuario.IdUsuarioAdmin.Value.ToString()));
         else
             claims.Add(new Claim(TiposClaims.IdUsuarioAdmin, string.Empty));
 
