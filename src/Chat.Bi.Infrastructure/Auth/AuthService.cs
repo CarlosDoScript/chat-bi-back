@@ -43,21 +43,17 @@ public class AuthService(
             new Claim(TiposClaims.Nome,usuario.Nome),
             new Claim(TiposClaims.Admin,usuario.Admin ? "1" : "0"),
             new Claim(TiposClaims.Master,usuario.Master ? "1" : "0"),
-            new Claim(TiposClaims.IdEmpresa, usuario.IdEmpresa.ToString())
+            new Claim(TiposClaims.IdEmpresa, usuario.IdEmpresa.ToString()),
+            new Claim(TiposClaims.IdUsuarioAdmin, usuario.IdUsuarioAdmin.HasValue ? usuario.IdUsuarioAdmin.Value.ToString() : string.Empty)
         };
 
-        if (usuario.IdUsuarioAdmin.HasValue)
-            claims.Add(new Claim(TiposClaims.IdUsuarioAdmin, usuario.IdUsuarioAdmin.Value.ToString()));
-        else
-            claims.Add(new Claim(TiposClaims.IdUsuarioAdmin, string.Empty));
-
         var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
-                expires: DateTime.UtcNow.AddDays(3),
-                signingCredentials: credentials,
-                claims: claims
-            );
+            issuer: issuer,
+            audience: audience,
+            expires: DateTime.UtcNow.AddDays(3),
+            signingCredentials: credentials,
+            claims: claims
+        );
 
         var tokenHandler = new JwtSecurityTokenHandler();
 
