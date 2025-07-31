@@ -21,6 +21,8 @@ public sealed class ObterBaseDeDadosQueryHandler(
             baseDeDados.Tipo,
             baseDeDados.ConnectionStringCriptografada,
             baseDeDados.SomenteLeitura,
+            baseDeDados.Schema,
+            baseDeDados.Observacao,
             baseDeDados.CriadoEm
         );
 

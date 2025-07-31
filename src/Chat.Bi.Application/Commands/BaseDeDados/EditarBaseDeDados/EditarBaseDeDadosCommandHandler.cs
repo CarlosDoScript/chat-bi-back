@@ -21,7 +21,9 @@ public sealed class EditarBaseDeDadosCommandHandler(
             request.Tipo,
             request.ConnectionString.Criptografar(),
             request.SomenteLeitura,
-            idEmpresa
+            idEmpresa,
+            request.Schema,
+            request.Observacao
         );
 
         await baseDeDadosRepository.EditarAsync(baseDeDados);
@@ -34,6 +36,8 @@ public sealed class EditarBaseDeDadosCommandHandler(
             baseDeDados.Tipo,
             baseDeDados.ConnectionStringCriptografada,
             baseDeDados.SomenteLeitura,
+            baseDeDados.Schema,
+            baseDeDados.Observacao,
             baseDeDados.CriadoEm
         );
 

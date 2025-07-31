@@ -22,6 +22,15 @@ public class BaseDeDadosConfiguration : IEntityTypeConfiguration<BaseDeDados>
             .Property (x => x.ConnectionStringCriptografada)
             .HasColumnType("TEXT")
             .IsRequired();
+        
+        builder
+            .Property (x => x.Schema)
+            .HasColumnType("TEXT")
+            .IsRequired();
+
+        builder
+            .Property(x => x.Observacao)
+            .HasColumnType("TEXT");            
 
         builder
             .Property(x => x.SomenteLeitura)

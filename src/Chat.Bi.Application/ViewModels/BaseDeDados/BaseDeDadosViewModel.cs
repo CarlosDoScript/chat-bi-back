@@ -1,20 +1,16 @@
 ﻿namespace Chat.Bi.Application.ViewModels.BaseDeDados;
 
 public record BaseDeDadosViewModel(
-    int id,
-    string nome,
-    bool ativo,
-    string tipo,
-    string connectionStringCriptografa,
-    bool somenteLeitura,
-    DateTime criadoEm
+    int Id,
+    string Nome,
+    bool Ativo,
+    string Tipo,
+    string ConnectionStringCriptografada,
+    bool SomenteLeitura,
+    string Schema,
+    string? Observacao,
+    DateTime CriadoEm
 )
 {
-    public int Id { get; private set; } = id;
-    public string Nome { get; private set; } = nome;
-    public bool Ativo { get; private set; } = ativo;
-    public string Tipo { get; private set; } = tipo;
-    public string ConnectionStringCriptografada { get; private set; } = connectionStringCriptografa;
-    public bool SomenteLeitura { get; private set; } = somenteLeitura;
-    public string CriadoEm { get; private set; } = criadoEm.ToShortDateString();
+    public string CriadoEmFormatado => CriadoEm.ToShortDateString();
 }

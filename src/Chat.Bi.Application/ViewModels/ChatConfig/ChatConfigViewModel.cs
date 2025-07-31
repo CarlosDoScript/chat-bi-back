@@ -10,11 +10,5 @@ public record ChatConfigViewModel(
     DateTime criadoEm
 )
 {
-    public int Id { get; private set; } = id;
-    public string CorPrincipal { get; private set; } = corPrincipal;
-    public string CorSecundaria { get; private set; } = corSecundaria;
-    public string SaudacaoInicial { get; private set; } = saudacaoInicial;
-    public string Canal { get; private set; } = canal;
-    public bool Ativo { get; private set; } = ativo;
-    public string CriadoEm { get; private set; } = criadoEm.ToShortDateString();
+    public string CriadoEm => criadoEm.ToShortDateString();
 }

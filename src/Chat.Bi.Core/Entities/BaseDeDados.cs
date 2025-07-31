@@ -8,7 +8,9 @@ public class BaseDeDados : BaseEntity
         string tipo, 
         string connectionStringCriptografada,
         bool somenteLeitura,
-        int idEmpresa
+        int idEmpresa,
+        string schema,
+        string? observacao
     )
     {
         Nome = nome;
@@ -17,12 +19,16 @@ public class BaseDeDados : BaseEntity
         ConnectionStringCriptografada = connectionStringCriptografada;
         SomenteLeitura = somenteLeitura;
         IdEmpresa = idEmpresa;
+        Schema = schema;
+        Observacao = observacao;
     }
 
     public string Nome { get; private set; }
     public bool Ativo { get; private set; }
     public string Tipo { get; private set; }
     public string ConnectionStringCriptografada { get; private set; }
+    public string Schema { get; private set; }
+    public string? Observacao { get; private set; }
     public bool SomenteLeitura { get; private set; }
     public int IdEmpresa { get; private set; }
     public DateTime? AlteradoEm { get; private set; }
@@ -35,7 +41,9 @@ public class BaseDeDados : BaseEntity
         string tipo,
         string connectionStringCriptografada,
         bool somenteLeitura,
-        int idEmpresa
+        int idEmpresa,
+        string schema,
+        string? observacao
     )
     {
         var erros = new List<string>();
@@ -52,6 +60,9 @@ public class BaseDeDados : BaseEntity
         if(idEmpresa <= 0)
             erros.Add("Empresa é obrigatório.");
 
+        if (string.IsNullOrWhiteSpace(schema))
+            erros.Add("Schema é obrigatório.");
+
         if (erros.Any())
             return Resultado<BaseDeDados>.Falhar(erros);
 
@@ -61,7 +72,9 @@ public class BaseDeDados : BaseEntity
             tipo,
             connectionStringCriptografada,
             somenteLeitura,
-            idEmpresa
+            idEmpresa,
+            schema,
+            observacao
         );
 
         return Resultado<BaseDeDados>.Ok(baseDeDados);
@@ -73,7 +86,9 @@ public class BaseDeDados : BaseEntity
         string tipo,
         string connectionStringCriptografada,
         bool somenteLeitura,
-        int idEmpresa
+        int idEmpresa,
+        string schema,
+        string? observacao
     )
     {
         Nome = nome;
@@ -82,5 +97,7 @@ public class BaseDeDados : BaseEntity
         ConnectionStringCriptografada = connectionStringCriptografada;
         SomenteLeitura = somenteLeitura;
         IdEmpresa = idEmpresa;
+        Schema = schema;
+        Observacao = observacao;
     }
 }

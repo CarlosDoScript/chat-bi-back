@@ -24,6 +24,8 @@ public sealed class ListarBaseDeDadosQueryHandler(
             x.Tipo,
             x.ConnectionStringCriptografada,
             x.SomenteLeitura,
+            x.Schema,
+            x.Observacao,
             x.CriadoEm
         ));
 

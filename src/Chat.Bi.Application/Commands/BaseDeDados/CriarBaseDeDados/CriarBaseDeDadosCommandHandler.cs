@@ -13,7 +13,9 @@ public sealed class CriarBaseDeDadosCommandHandler(
             request.Tipo,
             request.ConnectionString.Criptografar(),
             request.SomenteLeitura,
-            usuarioAutenticadoService.ObterIdEmpresa()
+            usuarioAutenticadoService.ObterIdEmpresa(),
+            request.Schema,
+            request.Observacao
         );
 
         if (resultadoBaseDeDados.ContemErros)

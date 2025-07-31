@@ -6,7 +6,4 @@ public record RefreshTokenViewModel(
     DateTime expiraEm
 )
 {
-    public string Token { get; init; } = token;
-    public string RefreshToken { get; init; } = refreshToken;
-    public DateTime ExpiraEm { get; init; } = expiraEm;
 }

@@ -21,5 +21,9 @@ public class CriarBaseDeDadosCommandValidator : AbstractValidator<CriarBaseDeDad
         RuleFor(x => x.ConnectionString)
             .NotEmpty()
             .WithMessage("ConnectionString é obrigatório.");
+        
+        RuleFor(x => x.Schema)
+            .NotEmpty()
+            .WithMessage("Schema é obrigatório.");
     }
 }

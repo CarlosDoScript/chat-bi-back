@@ -10,6 +10,8 @@ public class EditarBaseDeDadosCommand : IRequest<Resultado<BaseDeDadosViewModel>
     public string Tipo { get; set; }
     public string ConnectionString { get; set; }
     public bool SomenteLeitura { get; set; }
+    public string Schema { get; set; }
+    public string Observacao { get; set; }
 
     public void SetId(int id)
     => Id = id;
