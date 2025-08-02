@@ -1,4 +1,6 @@
-﻿namespace Chat.Bi.Infrastructure.IA.Ollama;
+﻿using Chat.Bi.Core.Constantes.ChatConfig;
+
+namespace Chat.Bi.Infrastructure.IA.Ollama;
 
 public class OllamaService(
         IHttpClientFactory httpClientFactory,
@@ -10,7 +12,10 @@ public class OllamaService(
         => httpClientFactory.CreateClient(ApisConfiguration.Ollama);
     
     readonly OllamaSettings _ollamaSettings = configuration.GetNested<ModelosIaSettings>().Ollama;
-    
+
+    public string Nome 
+        => ChatConfigModelos.Ollama;
+
     public async Task<string> PerguntarAsync(string prompt, bool stream = false)
     {
         var request = new

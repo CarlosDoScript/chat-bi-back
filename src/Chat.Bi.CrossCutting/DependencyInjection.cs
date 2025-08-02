@@ -1,12 +1,17 @@
 ﻿using System.Diagnostics;
 using Chat.Bi.Application.Commands.Usuario.CriarContaUsuario;
 using Chat.Bi.Core.Repositories;
+using Chat.Bi.Core.Resolvers;
 using Chat.Bi.Core.Services;
 using Chat.Bi.Infrastructure.Auth;
 using Chat.Bi.Infrastructure.Configuration;
 using Chat.Bi.Infrastructure.Configuration.Constantes;
-using Chat.Bi.Infrastructure.IA.Interfaces;
+using Chat.Bi.Infrastructure.IA.Factory;
+using Chat.Bi.Infrastructure.IA.Factory.Interfaces;
 using Chat.Bi.Infrastructure.IA.Ollama;
+using Chat.Bi.Infrastructure.IA.QueryGenerator;
+using Chat.Bi.Infrastructure.IA.RagContexto;
+using Chat.Bi.Infrastructure.IA.Resolvers;
 using Chat.Bi.Infrastructure.Logging;
 using Chat.Bi.Infrastructure.Persistence;
 using Chat.Bi.Infrastructure.Persistence.Repositories;
@@ -47,12 +52,19 @@ public static class DependencyInjection
         services.AddScoped<IUsuarioAutenticadoService, UsuarioAutenticadoService>();
         services.AddSingleton(typeof(IAppLogger<>), typeof(AppLogger<>));
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CriarContaUsuarioCommand).Assembly));
+        services.AddMemoryCache();
         ResolverRepository(services);
         ConfigurarModeloIa(services);
     }
 
     static void ConfigurarModeloIa(IServiceCollection services)
     {
+        services.AddScoped<IModelosIaFactory, ModelosIaFactory>();
+        services.AddScoped<IModelosIaService, OllamaService>();
+        services.AddScoped<IQueryGeneratorService, QueryGeneratorService>();
+        services.AddScoped<IRagContextoService, RagContextoService>();
+        services.AddScoped<IModeloIaResolver, ModeloIaResolver>();
+        
         //Ollama
         services.AddHttpClient<IModelosIaService,OllamaService>(ApisConfiguration.Ollama, (sp, client) =>
         {
