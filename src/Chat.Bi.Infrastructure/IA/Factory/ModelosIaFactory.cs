@@ -4,13 +4,15 @@ public class ModelosIaFactory(
     IEnumerable<IModelosIaService> services
     ) : IModelosIaFactory
 {
-    public IModelosIaService GetService(string nomeIa)
+    public Resultado<IModelosIaService> GetService(string nomeIa)
     {
         var service = services.FirstOrDefault(s => s.Nome.Equals(nomeIa,StringComparison.InvariantCultureIgnoreCase));
         
         if(service is null)
-            throw new InvalidOperationException($"Nenhuma IA registrada com o nome '{nomeIa}'.");
+        {
+            return Resultado<IModelosIaService>.Falhar($"Nenhuma IA registrada com o nome '{nomeIa}'.");
+        }
         
-        return service;
+        return Resultado<IModelosIaService>.Ok(service);
     }
 }

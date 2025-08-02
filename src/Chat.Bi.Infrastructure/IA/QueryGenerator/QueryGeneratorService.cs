@@ -9,11 +9,17 @@ public class QueryGeneratorService(
 {
     public async Task<Resultado<(string Sql, string? RespostaUsuario)>> GerarQueryAsync(int empresaId, string perguntaUsuario)
     {
+        var contexto = await ragContextoService.GerarContextoAsync();        
+        var prompt = MontarPrompt(contexto, perguntaUsuario);        
         var modeloIa = await modeloIaResolver.ObterModeloIaAsync(empresaId);
-        var contexto = await ragContextoService.GerarContextoAsync();
-        var prompt = MontarPrompt(contexto, perguntaUsuario);
-        var iaService = factory.GetService(modeloIa);
-        var respostaIa = await iaService.PerguntarAsync(prompt);
+
+        var resultadoIaService = factory.GetService(modeloIa);
+
+        if(resultadoIaService.ContemErros)
+            return Resultado<(string, string?)>.Falhar(resultadoIaService.Erros);
+
+        var respostaIa = await resultadoIaService.Valor.PerguntarAsync(prompt);
+        
         var (sql, markdown) = ExtrairSqlEResposta(respostaIa);
 
         if (string.IsNullOrWhiteSpace(sql))

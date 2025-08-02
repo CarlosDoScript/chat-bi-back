@@ -2,5 +2,5 @@
 
 public interface IModelosIaFactory
 {
-    IModelosIaService GetService(string nomeIa);
+    Resultado<IModelosIaService> GetService(string nomeIa);
 }
