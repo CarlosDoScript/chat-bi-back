@@ -5,14 +5,14 @@ public class RagContextoService(
     ) : IRagContextoService
 {
     
-    public async Task<string> GerarContextoAsync()
+    public async Task<(string Contexto, string TipoBaseDeDados)> GerarContextoAsync()
     {
         var baseDeDados = await context
             .BaseDeDados
             .FirstOrDefaultAsync(x => x.Ativo);
 
         if(baseDeDados is null || string.IsNullOrWhiteSpace(baseDeDados.Schema))
-            return "Nenhuma base de dados foi encontrada.";
+            return ("Nenhuma base de dados foi encontrada.",baseDeDados?.Tipo ?? string.Empty);
         
         var sb = new StringBuilder();
 
@@ -26,6 +26,6 @@ public class RagContextoService(
             sb.AppendLine($"Observações gerais da base: {baseDeDados.Observacao}");
         }
         
-        return sb.ToString();
+        return (sb.ToString(),baseDeDados.Tipo);
     }
 }

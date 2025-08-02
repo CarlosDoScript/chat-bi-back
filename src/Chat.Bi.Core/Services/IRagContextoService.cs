@@ -2,5 +2,5 @@
 
 public interface IRagContextoService
 {
-    Task<string> GerarContextoAsync();
+    Task<(string Contexto,string TipoBaseDeDados)> GerarContextoAsync();
 }
