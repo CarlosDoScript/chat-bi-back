@@ -1,8 +1,12 @@
-﻿using Chat.Bi.Application.Commands.Usuario.CriarContaUsuario;
+﻿using System.Diagnostics;
+using Chat.Bi.Application.Commands.Usuario.CriarContaUsuario;
 using Chat.Bi.Core.Repositories;
 using Chat.Bi.Core.Services;
 using Chat.Bi.Infrastructure.Auth;
 using Chat.Bi.Infrastructure.Configuration;
+using Chat.Bi.Infrastructure.Configuration.Constantes;
+using Chat.Bi.Infrastructure.IA.Interfaces;
+using Chat.Bi.Infrastructure.IA.Ollama;
 using Chat.Bi.Infrastructure.Logging;
 using Chat.Bi.Infrastructure.Persistence;
 using Chat.Bi.Infrastructure.Persistence.Repositories;
@@ -11,6 +15,9 @@ using Chat.Bi.SharedKernel.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Polly;
+using Polly.Extensions.Http;
 
 namespace Chat.Bi.CrossCutting;
 
@@ -34,21 +41,58 @@ public static class DependencyInjection
     static void Infraestrutura(IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<AppSettings>(configuration.GetSection(nameof(AppSettings)));
+        services.Configure<ModelosIaSettings>(configuration.GetSection(nameof(ModelosIaSettings)));
+        services.Configure<PollySettings>(configuration.GetSection(nameof(PollySettings)));
         services.AddTransient<IAuthService, AuthService>();
         services.AddScoped<IUsuarioAutenticadoService, UsuarioAutenticadoService>();
         services.AddSingleton(typeof(IAppLogger<>), typeof(AppLogger<>));
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CriarContaUsuarioCommand).Assembly));
         ResolverRepository(services);
+        ConfigurarModeloIa(services);
     }
 
+    static void ConfigurarModeloIa(IServiceCollection services)
+    {
+        //Ollama
+        services.AddHttpClient<IModelosIaService,OllamaService>(ApisConfiguration.Ollama, (sp, client) =>
+        {
+            var options = sp.GetRequiredService<IOptions<ModelosIaSettings>>().Value;
+            client.BaseAddress = new Uri(options.Ollama.Endpoint);
+            client.Timeout = TimeSpan.FromSeconds(30);
+        })
+        .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+        .AddPolicyHandler((sp, request) =>
+        {
+            var logger = sp.GetRequiredService<IAppLogger<OllamaService>>();
+            var settings = sp.GetRequiredService<IOptions<PollySettings>>().Value;
+            return GetRetryPolicy(ApisConfiguration.Ollama, logger, settings);
+        })
+        .AddPolicyHandler((sp, request) =>
+        {
+            var logger = sp.GetRequiredService<IAppLogger<OllamaService>>();
+            var settings = sp.GetRequiredService<IOptions<PollySettings>>().Value;
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .CircuitBreakerAsync(
+                    handledEventsAllowedBeforeBreaking: settings.CircuitBreakerFailures,
+                    durationOfBreak: TimeSpan.FromSeconds(settings.CircuitBreakerDurationSeconds),
+                    onBreak: (outcome, timespan) => 
+                        logger.LogError(outcome.Exception,$"[{ApisConfiguration.Ollama} CircuitBreaker] ABERTO por {timespan.TotalSeconds}s - Motivo: {outcome.Exception?.Message ?? outcome.Result.StatusCode.ToString()}"),
+                    onReset: () => 
+                        logger.LogInformation($"[{ApisConfiguration.Ollama} CircuitBreaker] RESETADO")
+                );
+
+        });
+    }
+    
     static void ResolverRepository(IServiceCollection services)
     {
-        services.AddTransient(typeof(IBaseEntityRepository<,>), typeof(BaseEntityRepository<,>));
-        services.AddTransient<IUsuarioRepository, UsuarioRepository>();
-        services.AddTransient<IEmpresaRepository, EmpresaRepository>();
-        services.AddTransient<IChatRepository, ChatRepository>();
-        services.AddTransient<IChatConfigRepository, ChatConfigRepository>();
-        services.AddTransient<IBaseDeDadosRepository, BaseDeDadosRepository>();
+        services.AddScoped(typeof(IBaseEntityRepository<,>), typeof(BaseEntityRepository<,>));
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<IEmpresaRepository, EmpresaRepository>();
+        services.AddScoped<IChatRepository, ChatRepository>();
+        services.AddScoped<IChatConfigRepository, ChatConfigRepository>();
+        services.AddScoped<IBaseDeDadosRepository, BaseDeDadosRepository>();
     }
 
     static void ResolveConexaoBanco(IServiceCollection services, IConfiguration configuration)
@@ -57,5 +101,24 @@ public static class DependencyInjection
 
         services.AddDbContext<ChatBiDbContext>(options =>
             options.UseNpgsql(connectionString));
+    }
+    
+    static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy(
+        string api,
+        IAppLogger<OllamaService> logger,
+        PollySettings settings)
+    {
+        return HttpPolicyExtensions
+            .HandleTransientHttpError()
+            .OrResult(msg => (int)msg.StatusCode == 429)
+            .WaitAndRetryAsync(
+                retryCount: settings.RetryCount,
+                sleepDurationProvider: attempt => 
+                    TimeSpan.FromSeconds(Math.Pow(settings.InitialBackoffSeconds, attempt)),
+                onRetry: (outcome, timespan, retryAttempt, context) =>
+                {
+                    logger.LogWarning($"[{api} Retry] Tentativa {retryAttempt} em {timespan.TotalSeconds}s - Erro: {outcome.Exception?.Message ?? outcome.Result.StatusCode.ToString()}");
+                }
+            );
     }
 }
