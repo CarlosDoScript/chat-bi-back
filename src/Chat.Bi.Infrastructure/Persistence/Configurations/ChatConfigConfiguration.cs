@@ -27,6 +27,11 @@ public class ChatConfigConfiguration : IEntityTypeConfiguration<ChatConfig>
             .Property(x => x.Canal)
             .HasColumnType("VARCHAR(255)")
             .IsRequired();
+        
+        builder
+            .Property(x => x.ModeloIA)
+            .HasColumnType("VARCHAR(255)")
+            .IsRequired();
 
         builder
             .Property(x => x.Ativo)
