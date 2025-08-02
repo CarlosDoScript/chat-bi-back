@@ -1,4 +1,6 @@
-﻿namespace Chat.Bi.Core.Entities;
+﻿using Chat.Bi.Core.Constantes.BaseDeDados;
+
+namespace Chat.Bi.Core.Entities;
 
 public class BaseDeDados : BaseEntity
 {
@@ -51,8 +53,8 @@ public class BaseDeDados : BaseEntity
         if(string.IsNullOrWhiteSpace(nome))
             erros.Add("Nome é obrigatório.");
 
-        if(string.IsNullOrWhiteSpace(tipo))
-            erros.Add("Tipo é obrigatório.");
+        if (string.IsNullOrWhiteSpace(tipo) || !TiposBaseDeDados.Todos.Contains(tipo))
+            erros.Add("Tipo está inválido.");
         
         if(string.IsNullOrWhiteSpace(connectionStringCriptografada))
             erros.Add("ConnectionString criptografada é obrigatório.");

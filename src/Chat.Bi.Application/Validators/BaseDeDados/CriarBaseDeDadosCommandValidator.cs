@@ -1,6 +1,4 @@
-﻿using Chat.Bi.Application.Commands.BaseDeDados.CriarBaseDeDados;
-
-namespace Chat.Bi.Application.Validators.BaseDeDados;
+﻿namespace Chat.Bi.Application.Validators.BaseDeDados;
 
 public class CriarBaseDeDadosCommandValidator : AbstractValidator<CriarBaseDeDadosCommand>
 {
@@ -12,12 +10,10 @@ public class CriarBaseDeDadosCommandValidator : AbstractValidator<CriarBaseDeDad
 
         RuleFor(x => x.Tipo)
             .NotEmpty()
-            .WithMessage("Tipo é obrigatório.");
+            .WithMessage("Tipo é obrigatório.")
+            .Must(canal => TiposBaseDeDados.Todos.Contains(canal))
+            .WithMessage("Tipo está inválido.");
         
-        RuleFor(x => x.ConnectionString)
-            .NotEmpty()
-            .WithMessage("ConnectionString é obrigatório.");
-
         RuleFor(x => x.ConnectionString)
             .NotEmpty()
             .WithMessage("ConnectionString é obrigatório.");
@@ -25,5 +21,9 @@ public class CriarBaseDeDadosCommandValidator : AbstractValidator<CriarBaseDeDad
         RuleFor(x => x.Schema)
             .NotEmpty()
             .WithMessage("Schema é obrigatório.");
+        
+        RuleFor(x => x.Observacao)
+            .NotEmpty()
+            .WithMessage("Observação é obrigatório.");
     }
 }

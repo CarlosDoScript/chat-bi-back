@@ -11,3 +11,5 @@ global using FluentValidation;
 global using Chat.Bi.Application.Commands.ChatConfig.CriarChatConfig;
 global using Chat.Bi.Core.Constantes.ChatConfig;
 global using Chat.Bi.Application.ViewModels.ChatConfig;
+global using Chat.Bi.Application.Commands.BaseDeDados.CriarBaseDeDados;
+global using Chat.Bi.Core.Constantes.BaseDeDados;
