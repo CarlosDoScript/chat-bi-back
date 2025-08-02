@@ -8,3 +8,6 @@ global using Chat.Bi.SharedKernel.Common;
 global using MediatR;
 global using Chat.Bi.SharedKernel.Paginacao;
 global using FluentValidation;
+global using Chat.Bi.Application.Commands.ChatConfig.CriarChatConfig;
+global using Chat.Bi.Core.Constantes.ChatConfig;
+global using Chat.Bi.Application.ViewModels.ChatConfig;

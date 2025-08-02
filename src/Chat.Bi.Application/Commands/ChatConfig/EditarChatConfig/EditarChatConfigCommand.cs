@@ -1,6 +1,4 @@
-﻿using Chat.Bi.Application.ViewModels.ChatConfig;
-
-namespace Chat.Bi.Application.Commands.ChatConfig.EditarChatConfig;
+﻿namespace Chat.Bi.Application.Commands.ChatConfig.EditarChatConfig;
 
 public class EditarChatConfigCommand : IRequest<Resultado<ChatConfigViewModel>>
 {
@@ -9,6 +7,7 @@ public class EditarChatConfigCommand : IRequest<Resultado<ChatConfigViewModel>>
     public string CorSecundaria { get; set; }
     public string SaudacaoInicial { get; set; }
     public string Canal { get; set; }
+    public string  ModeloIA { get; set; }
     public bool Ativo { get; set; }
 
     public void SetId(int id)

@@ -6,6 +6,7 @@ public record ChatConfigViewModel(
     string corSecundaria,
     string saudacaoInicial,
     string canal,
+    string modeloIA,
     bool ativo,
     DateTime criadoEm
 )

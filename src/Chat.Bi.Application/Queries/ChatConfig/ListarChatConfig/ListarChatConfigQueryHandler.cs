@@ -1,6 +1,4 @@
-﻿using Chat.Bi.Application.ViewModels.ChatConfig;
-
-namespace Chat.Bi.Application.Queries.ChatConfig.ListarChatConfig;
+﻿namespace Chat.Bi.Application.Queries.ChatConfig.ListarChatConfig;
 
 public class ListarChatConfigQueryHandler(
     IChatConfigRepository chatConfigRepository,
@@ -24,6 +22,7 @@ public class ListarChatConfigQueryHandler(
                  x.CorSecundaria,
                  x.SaudacaoInicial,
                  x.Canal,
+                 x.ModeloIA,
                  x.Ativo,
                  x.CriadoEm
             )

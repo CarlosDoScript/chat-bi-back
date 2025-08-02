@@ -1,6 +1,4 @@
-﻿using Chat.Bi.Application.Commands.ChatConfig.CriarChatConfig;
-
-namespace Chat.Bi.Application.Validators.ChatConfig;
+﻿namespace Chat.Bi.Application.Validators.ChatConfig;
 
 public class CriarChatConfigCommandValidator : AbstractValidator<CriarChatConfigCommand>
 {
@@ -20,6 +18,14 @@ public class CriarChatConfigCommandValidator : AbstractValidator<CriarChatConfig
         
         RuleFor(x => x.Canal)
             .NotEmpty()
-            .WithMessage("Canal é obrigatório.");
+            .WithMessage("Canal é obrigatório.")
+            .Must(canal => ChatConfigCanais.Todos.Contains(canal))
+            .WithMessage("Canal está inválido.");
+
+        RuleFor(x => x.ModeloIA)
+            .NotEmpty()
+            .WithMessage("Modelo IA é obrigatório.")
+            .Must(modelo => ChatConfigModelos.Todos.Contains(modelo))
+            .WithMessage("Modelo IA está inválido.");
     }
 }

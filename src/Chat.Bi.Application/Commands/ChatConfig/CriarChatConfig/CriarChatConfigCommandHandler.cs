@@ -17,6 +17,7 @@ public sealed class CriarChatConfigCommandHandler(
             command.CorSecundaria,
             command.SaudacaoInicial,
             command.Canal,
+            command.ModeloIA,
             usuarioAutenticadoService.ObterIdEmpresa(),
             command.Ativo
         );

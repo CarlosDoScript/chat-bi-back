@@ -1,4 +1,6 @@
-﻿namespace Chat.Bi.Core.Entities;
+﻿using Chat.Bi.Core.Constantes.ChatConfig;
+
+namespace Chat.Bi.Core.Entities;
 
 public class ChatConfig : BaseEntity
 {
@@ -7,6 +9,7 @@ public class ChatConfig : BaseEntity
         string corSecundaria, 
         string saudacaoInicial, 
         string canal, 
+        string modeloIA,
         int idEmpresa, 
         bool ativo
     )
@@ -17,12 +20,14 @@ public class ChatConfig : BaseEntity
         Canal = canal;
         IdEmpresa = idEmpresa;
         Ativo = ativo;
+        ModeloIA = modeloIA;
     }
 
     public string CorPrincipal { get; private set; }
     public string CorSecundaria { get; private set; }
     public string SaudacaoInicial { get; private set; }
     public string Canal { get; private set; }
+    public string ModeloIA { get; private set; }
     public int IdEmpresa { get; private set; }
     public bool Ativo { get; private set; }
     public DateTime? AlteradoEm { get; private set; }   
@@ -34,6 +39,7 @@ public class ChatConfig : BaseEntity
        string corSecundaria,
        string saudacaoInicial,
        string canal,
+       string modeloIA,
        int idEmpresa,
        bool ativo
    )
@@ -49,8 +55,11 @@ public class ChatConfig : BaseEntity
         if (string.IsNullOrWhiteSpace(saudacaoInicial))
             erros.Add("Saudação inicial é obrigatório.");
 
-        if (string.IsNullOrWhiteSpace(canal))
-            erros.Add("Canal é obrigatório.");
+        if (string.IsNullOrWhiteSpace(canal) || !ChatConfigCanais.Todos.Contains(canal))
+            erros.Add("Canal está inválido.");
+        
+        if (string.IsNullOrWhiteSpace(modeloIA) || !ChatConfigModelos.Todos.Contains(modeloIA))
+            erros.Add("Modelo IA está inválido.");
 
         if (idEmpresa <= 0)
             erros.Add("Empresa é obrigatório.");
@@ -63,6 +72,7 @@ public class ChatConfig : BaseEntity
             corSecundaria,
             saudacaoInicial,
             canal,
+            modeloIA,
             idEmpresa,
             ativo
         );
@@ -75,6 +85,7 @@ public class ChatConfig : BaseEntity
         string corSecundaria,
         string saudacaoInicial,
         string canal,
+        string modelo,
         bool ativo
     )
     {
@@ -82,6 +93,7 @@ public class ChatConfig : BaseEntity
         CorSecundaria = corSecundaria;
         SaudacaoInicial = saudacaoInicial;
         Canal = canal;
+        ModeloIA = modelo;
         Ativo = ativo;
         AlteradoEm = DateTime.UtcNow;
     }

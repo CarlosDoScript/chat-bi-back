@@ -1,6 +1,4 @@
-﻿using Chat.Bi.Application.ViewModels.ChatConfig;
-
-namespace Chat.Bi.Application.Queries.ChatConfig.ObterChatConfig;
+﻿namespace Chat.Bi.Application.Queries.ChatConfig.ObterChatConfig;
 
 public sealed class ObterChatConfigQueryHandler(
     IChatConfigRepository chatConfigRepository,
@@ -20,6 +18,7 @@ public sealed class ObterChatConfigQueryHandler(
             chatConfig.CorSecundaria,
             chatConfig.SaudacaoInicial,
             chatConfig.Canal,
+            chatConfig.ModeloIA,
             chatConfig.Ativo,
             chatConfig.CriadoEm
         );

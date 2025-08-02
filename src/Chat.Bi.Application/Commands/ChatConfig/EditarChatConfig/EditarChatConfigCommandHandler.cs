@@ -1,6 +1,4 @@
-﻿using Chat.Bi.Application.ViewModels.ChatConfig;
-
-namespace Chat.Bi.Application.Commands.ChatConfig.EditarChatConfig;
+﻿namespace Chat.Bi.Application.Commands.ChatConfig.EditarChatConfig;
 
 public sealed class EditarChatConfigCommandHandler(
     IChatConfigRepository chatConfigRepository,
@@ -14,12 +12,12 @@ public sealed class EditarChatConfigCommandHandler(
         if (chatConfig is null)
             return Resultado<ChatConfigViewModel>.Falhar("Configuração do chat não encontrado.");
 
-
         chatConfig.Alterar(
             request.CorPrincipal,
             request.CorSecundaria,
             request.SaudacaoInicial,
             request.Canal,
+            request.ModeloIA,
             request.Ativo
         );
 
@@ -32,6 +30,7 @@ public sealed class EditarChatConfigCommandHandler(
             chatConfig.CorSecundaria,
             chatConfig.SaudacaoInicial,
             chatConfig.Canal,
+            chatConfig.ModeloIA,
             chatConfig.Ativo,
             chatConfig.CriadoEm
         );
