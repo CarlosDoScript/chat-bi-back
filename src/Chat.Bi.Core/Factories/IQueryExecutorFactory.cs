@@ -2,5 +2,5 @@
 
 public interface IQueryExecutorFactory
 {
-    Resultado<IQueryExecutor> GetExecutor(string tipoBase);
+    Resultado<IQueryExecutorService> GetExecutor(string tipoBase);
 }

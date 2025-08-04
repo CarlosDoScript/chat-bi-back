@@ -2,5 +2,5 @@
 
 public interface IQueryGeneratorService
 {
-    Task<Resultado<(string Sql, string? RespostaUsuario)>> GerarQueryAsync(int empresaId,string perguntaUsuario);
+    Task<Resultado<string>> GerarQueryAsync(int empresaId,string perguntaUsuario);
 }

@@ -1,17 +1,17 @@
 ﻿namespace Chat.Bi.Infrastructure.QueryExecutors;
 
 public class QueryExecutorFactory(
-        IEnumerable<IQueryExecutor> executors
+        IEnumerable<IQueryExecutorService> executors
     ) : IQueryExecutorFactory
 {
-    public Resultado<IQueryExecutor> GetExecutor(string tipoBase)
+    public Resultado<IQueryExecutorService> GetExecutor(string tipoBase)
     {
         var executor = executors.FirstOrDefault(e =>
             e.TipoBase.Equals(tipoBase, StringComparison.InvariantCultureIgnoreCase));
 
         if (executor is null)
-            return Resultado<IQueryExecutor>.Falhar($"Tipo de base de dados `{tipoBase}` não suportado");
+            return Resultado<IQueryExecutorService>.Falhar($"Tipo de base de dados `{tipoBase}` não suportado");
 
-        return Resultado<IQueryExecutor>.Ok(executor);
+        return Resultado<IQueryExecutorService>.Ok(executor);
     }
 }

@@ -7,7 +7,7 @@ public class QueryGeneratorService(
     IAppLogger<QueryGeneratorService> logger
 ) : IQueryGeneratorService
 {
-    public async Task<Resultado<(string Sql, string? RespostaUsuario)>> GerarQueryAsync(int empresaId, string perguntaUsuario)
+    public async Task<Resultado<string>> GerarQueryAsync(int empresaId, string perguntaUsuario)
     {
         var contexto = await ragContextoService.GerarContextoAsync();
         var prompt = MontarPrompt(contexto.Contexto, perguntaUsuario, contexto.TipoBaseDeDados);
@@ -16,39 +16,38 @@ public class QueryGeneratorService(
         var resultadoIaService = factory.GetService(modeloIa);
 
         if (resultadoIaService.ContemErros)
-            return Resultado<(string, string?)>.Falhar(resultadoIaService.Erros);
+            return Resultado<string>.Falhar(resultadoIaService.Erros);
 
         var respostaIa = await resultadoIaService.Valor.PerguntarAsync(prompt);
 
-        var (sql, markdown) = ExtrairSqlEResposta(respostaIa);
+        var sql = ExtrairSqlEResposta(respostaIa);
 
         if (string.IsNullOrWhiteSpace(sql))
         {
             logger.LogWarning($"IA não retornou SQL válida para empresa {empresaId}. Pergunta: {perguntaUsuario}");
-            return Resultado<(string, string?)>.Falhar("A IA não retornou uma query SQL Válida.");
+            return Resultado<string>.Falhar("A IA não retornou uma query SQL Válida.");
         }
 
         if (!SqlEhSomenteSelect(sql))
         {
             logger.LogWarning($"IA gerou SQL proibida para empresa {empresaId}: {sql}");
-            return Resultado<(string, string?)>.Falhar("A query gerada pela IA não é permitida, somente SELECT é aceito");
+            return Resultado<string>.Falhar("A query gerada pela IA não é permitida, somente SELECT é aceito");
         }
 
-        return Resultado<(string Sql, string? RespostaUsuario)>.Ok((sql, markdown));
+        return Resultado<string>.Ok(sql);
     }
 
     string MontarPrompt(string contexto, string perguntaUsuario, string tipoBaseDeDados)
     {
         return $"""
-                Você é um assistente especialista em gerar queries SQL para um sistema de BI.
+                Você é um assistente especialista em gerar queries SQL.
 
                 Regras:
-                1. Sempre gere primeiro a query SQL válida **EXCLUSIVAMENTE com SELECT**.
-                2. Depois da query, sugira como apresentar o resultado ao usuário de forma amigável (ex.: tabela Markdown, lista ou resumo).
-                3. Nunca invente colunas ou tabelas que não existam.
-                4. Se a pergunta for ambígua, assuma o caso mais conservador.
-                5. Não execute a query, apenas gere a instrução SQL e a sugestão de apresentação.
-                6. A query SQL deve estar dentro de blocos ```sql``` e a sugestão de resposta em blocos ```markdown```.
+                1. Sempre gere apenas a query SQL válida **EXCLUSIVAMENTE com SELECT**.
+                2. Nunca invente colunas ou tabelas que não existam.
+                3. Se a pergunta for ambígua, assuma o caso mais conservador.
+                4. Não execute a query, apenas gere a instrução SQL.
+                5. A query SQL deve estar dentro de blocos ```sql```.
 
                 Contexto do banco de dados {tipoBaseDeDados}:
                 {contexto}
@@ -60,28 +59,14 @@ public class QueryGeneratorService(
 
                 ```sql
                 SUA_QUERY_SQL_AQUI
-                ```
-
-                ```markdown
-                SUA_RESPOSTA_FORMATADA_AQUI
-                ```
+                ```                
                 """;
     }
 
-    (string Sql, string? RespostaUsuario) ExtrairSqlEResposta(string respostaIa)
+    string ExtrairSqlEResposta(string respostaIa)
     {
-        var sql = Regex.Match(respostaIa, @"```sql\s*(.*?)```", RegexOptions.Singleline)
-            .Groups[1].Value.Trim();
-
-        var markdown = Regex.Match(respostaIa, @"```markdown\s*(.*?)```", RegexOptions.Singleline)
-            .Groups[1].Value.Trim();
-
-        if (string.IsNullOrWhiteSpace(markdown))
-        {
-            markdown = "Aqui estão os resultados da sua consulta.";
-        }
-
-        return (sql, markdown);
+        var match = Regex.Match(respostaIa, @"```sql\s*(.*?)```", RegexOptions.Singleline);
+        return match.Success ? match.Groups[1].Value.Trim() : respostaIa.Trim();
     }
 
     static readonly string[] SqlProibidos =
@@ -97,19 +82,12 @@ public class QueryGeneratorService(
 
         var normalized = sql.Trim().ToUpperInvariant();
 
-        if (!normalized.StartsWith("SELECT"))
-            return false;
-
-        if (normalized.Contains(";"))
-            return false;
-
-        foreach (var comando in SqlProibidos)
-            if (normalized.Contains(comando))
-                return false;
-
-        if (normalized.Contains("--") || normalized.Contains("/*") || normalized.Contains("*/"))
-            return false;
-
-        return true;
+        return normalized.StartsWith("SELECT")
+            && !normalized.Contains(";")
+            && !SqlProibidos.Any(cmd => normalized.Contains(cmd))
+            && !normalized.Contains("--")
+            && !normalized.Contains("/*")
+            && !normalized.Contains("*/");
     }
+
 }

@@ -1,9 +1,8 @@
-﻿using Chat.Bi.Core.Constantes.BaseDeDados;
-using Npgsql;
+﻿using Npgsql;
 
 namespace Chat.Bi.Infrastructure.QueryExecutors.Executors;
 
-public class PostgreQueryExecutor : IQueryExecutor
+public class PostgreQueryExecutor : IQueryExecutorService
 {
     public string TipoBase => TiposBaseDeDados.Postgre;
 

@@ -3,4 +3,6 @@
 public static class CacheKeys
 {
     public static string ModeloIa(int empresaId) => $"ModeloIa:Empresa:{empresaId}";
+    public static string TipoBaseDeDados(int empresaId) => $"TipoBaseDeDados:Empresa:{empresaId}";
+    public static string ConnectionStringBaseDeDados(int empresaId) => $"ConnectionStringBaseDeDados:Empresa:{empresaId}";
 }

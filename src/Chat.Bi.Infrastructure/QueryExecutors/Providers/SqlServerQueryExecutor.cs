@@ -1,8 +1,6 @@
-﻿using Chat.Bi.Core.Constantes.BaseDeDados;
+﻿namespace Chat.Bi.Infrastructure.QueryExecutors.Executors;
 
-namespace Chat.Bi.Infrastructure.QueryExecutors.Executors;
-
-public class SqlServerQueryExecutor : IQueryExecutor
+public class SqlServerQueryExecutor : IQueryExecutorService
 {
     public string TipoBase => TiposBaseDeDados.SqlServer;
 

@@ -22,3 +22,4 @@ global using Chat.Bi.Core.Constantes.ChatConfig;
 global using Chat.Bi.SharedKernel.Common;
 global using Chat.Bi.Core.Factories;
 global using System.Data;
+global using Chat.Bi.Core.Constantes.BaseDeDados;

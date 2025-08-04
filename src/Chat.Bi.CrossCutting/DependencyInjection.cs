@@ -9,7 +9,9 @@ using Chat.Bi.Infrastructure.Configuration.Constantes;
 using Chat.Bi.Infrastructure.IA;
 using Chat.Bi.Infrastructure.IA.Factory.Interfaces;
 using Chat.Bi.Infrastructure.IA.Llm.Ollama;
+using Chat.Bi.Infrastructure.IA.QueryFormatter;
 using Chat.Bi.Infrastructure.IA.QueryGenerator;
+using Chat.Bi.Infrastructure.IA.QueryProcessor;
 using Chat.Bi.Infrastructure.IA.RagContexto;
 using Chat.Bi.Infrastructure.IA.Resolvers;
 using Chat.Bi.Infrastructure.Logging;
@@ -17,6 +19,7 @@ using Chat.Bi.Infrastructure.Persistence;
 using Chat.Bi.Infrastructure.Persistence.Repositories;
 using Chat.Bi.Infrastructure.QueryExecutors;
 using Chat.Bi.Infrastructure.QueryExecutors.Executors;
+using Chat.Bi.Infrastructure.QueryExecutors.Resolvers;
 using Chat.Bi.SharedKernel.Configuration;
 using Chat.Bi.SharedKernel.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -63,18 +66,21 @@ public static class DependencyInjection
 
     static void ConfigurarExecutors(IServiceCollection services)
     {
-        services.AddScoped<IQueryExecutor, SqlServerQueryExecutor>();
-        services.AddScoped<IQueryExecutor, PostgreQueryExecutor>();
+        services.AddScoped<IQueryExecutorService, SqlServerQueryExecutor>();
+        services.AddScoped<IQueryExecutorService, PostgreQueryExecutor>();
         services.AddScoped<IQueryExecutorFactory, QueryExecutorFactory>();
+        services.AddScoped<ITipoBaseDeDadosResolver, TipoBaseDeDadosResolver>();
     }
 
     static void ConfigurarModeloIa(IServiceCollection services)
     {
         services.AddScoped<IModelosIaFactory, ModelosIaFactory>();
         services.AddScoped<IModelosIaService, OllamaService>();
-        services.AddScoped<IQueryGeneratorService, QueryGeneratorService>();
         services.AddScoped<IRagContextoService, RagContextoService>();
         services.AddScoped<IModeloIaResolver, ModeloIaResolver>();
+        services.AddScoped<IQueryGeneratorService, QueryGeneratorService>();
+        services.AddScoped<IQueryFormatterService, QueryFormatterService>();
+        services.AddScoped<IQueryProcessorService, QueryProcessorService>();
         
         //Ollama
         services.AddHttpClient<IModelosIaService,OllamaService>(ApisConfiguration.Ollama, (sp, client) =>

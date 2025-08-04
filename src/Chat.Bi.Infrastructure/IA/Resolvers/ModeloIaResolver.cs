@@ -7,22 +7,22 @@ public class ModeloIaResolver(
     ) : IModeloIaResolver
 {
 
-    public async Task<string> ObterModeloIaAsync(int empresaid)
+    public async Task<string> ObterModeloIaAsync(int empresaId)
     {
-        string cacheKey = CacheKeys.ModeloIa(empresaid);
+        string cacheKey = CacheKeys.TipoBaseDeDados(empresaId);
 
         return await memoryCache.GetOrCreateAsync(cacheKey, async entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
 
             var modelo = await context.ChatConfig
-            .Where(x => x.IdEmpresa == empresaid && x.Ativo)
+            .Where(x => x.IdEmpresa == empresaId && x.Ativo)
             .Select(x => x.ModeloIA)
             .FirstOrDefaultAsync();
 
             if (string.IsNullOrWhiteSpace(modelo))
             {
-                logger.LogWarning($"Nenhum modelo IA configurado para empresa {empresaid}");
+                logger.LogWarning($"Nenhum modelo IA configurado para empresa {empresaId}");
                 return ChatConfigModelos.Ollama;
             }
 
