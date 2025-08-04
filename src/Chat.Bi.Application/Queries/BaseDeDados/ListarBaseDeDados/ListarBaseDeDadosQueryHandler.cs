@@ -26,7 +26,7 @@ public sealed class ListarBaseDeDadosQueryHandler(
             x.SomenteLeitura,
             x.Schema,
             x.Observacao,
-            x.CriadoEm
+            x.CriadoEm.ToShortDateString()
         ));
 
         var paginacao = new PaginacaoViewModel<BaseDeDadosViewModel>(basesDeDadosViewModel, totalRegistros, request.NumeroPagina, request.TamanhoPagina);

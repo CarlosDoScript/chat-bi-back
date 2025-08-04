@@ -20,7 +20,7 @@ public sealed class ObterChatConfigQueryHandler(
             chatConfig.Canal,
             chatConfig.ModeloIA,
             chatConfig.Ativo,
-            chatConfig.CriadoEm
+            chatConfig.CriadoEm.ToShortDateString()
         );
 
         return Resultado<ChatConfigViewModel>.Ok(chatConfigViewModel);

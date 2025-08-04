@@ -24,7 +24,7 @@ public class ListarChatConfigQueryHandler(
                  x.Canal,
                  x.ModeloIA,
                  x.Ativo,
-                 x.CriadoEm
+                 x.CriadoEm.ToShortDateString()
             )
         );
 

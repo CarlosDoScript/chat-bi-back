@@ -9,8 +9,7 @@ public record BaseDeDadosViewModel(
     bool SomenteLeitura,
     string Schema,
     string? Observacao,
-    DateTime CriadoEm
+    string CriadoEm
 )
 {
-    public string CriadoEmFormatado => CriadoEm.ToShortDateString();
 }

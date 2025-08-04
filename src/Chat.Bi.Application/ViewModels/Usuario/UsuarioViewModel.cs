@@ -5,12 +5,10 @@ public record UsuarioViewModel(
     string nome,
     string email,
     string documento, 
-    DateTime dataNascimento, 
+    string dataNascimento, 
     bool admin,
     bool ativo,
-    DateTime criadoEm
+    string criadoEm
 )
 {
-    public string DataNascimento => dataNascimento.ToShortDateString();
-    public string CriadoEm => criadoEm.ToShortDateString();
 }

@@ -8,8 +8,7 @@ public record ChatConfigViewModel(
     string canal,
     string modeloIA,
     bool ativo,
-    DateTime criadoEm
+    string criadoEm
 )
 {
-    public string CriadoEm => criadoEm.ToShortDateString();
 }

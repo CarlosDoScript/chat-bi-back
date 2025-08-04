@@ -30,10 +30,10 @@ public sealed class EditarUsuarioCommandHandler(
             usuario.Nome,
             usuario.Email,
             usuario.Documento,
-            usuario.DataNascimento,
+            usuario.DataNascimento.ToShortDateString(),
             usuario.Admin,
             usuario.Ativo,
-            usuario.CriadoEm
+            usuario.CriadoEm.ToShortDateString()
         );
 
         return Resultado<UsuarioViewModel>.Ok(usuarioViewModel);

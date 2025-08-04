@@ -23,10 +23,10 @@ public sealed class ListarUsuarioQueryHandler(
                 x.Nome,
                 x.Email,
                 x.Documento,
-                x.DataNascimento,
+                x.DataNascimento.ToShortDateString(),
                 x.Admin,
                 x.Ativo,
-                x.CriadoEm
+                x.CriadoEm.ToShortDateString()
             )
         );
 

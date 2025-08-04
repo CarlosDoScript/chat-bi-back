@@ -38,7 +38,6 @@ public class AuthService(
         {
             new Claim(JwtRegisteredClaimNames.Sub, usuario.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
             new Claim(TiposClaims.Id,usuario.Id.ToString()),
             new Claim(TiposClaims.Nome,usuario.Nome),
             new Claim(TiposClaims.Admin,usuario.Admin ? "1" : "0"),
@@ -52,7 +51,8 @@ public class AuthService(
             audience: audience,
             expires: DateTime.UtcNow.AddDays(3),
             signingCredentials: credentials,
-            claims: claims
+            claims: claims,
+            notBefore: DateTime.UtcNow
         );
 
         var tokenHandler = new JwtSecurityTokenHandler();

@@ -23,7 +23,7 @@ public sealed class ObterBaseDeDadosQueryHandler(
             baseDeDados.SomenteLeitura,
             baseDeDados.Schema,
             baseDeDados.Observacao,
-            baseDeDados.CriadoEm
+            baseDeDados.CriadoEm.ToShortDateString()
         );
 
         return Resultado<BaseDeDadosViewModel>.Ok(baseDeDadosViewModel);

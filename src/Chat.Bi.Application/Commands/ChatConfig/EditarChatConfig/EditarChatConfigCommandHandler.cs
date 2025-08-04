@@ -32,7 +32,7 @@ public sealed class EditarChatConfigCommandHandler(
             chatConfig.Canal,
             chatConfig.ModeloIA,
             chatConfig.Ativo,
-            chatConfig.CriadoEm
+            chatConfig.CriadoEm.ToShortDateString()
         );
 
         return Resultado<ChatConfigViewModel>.Ok(chatConfigViewModel);
