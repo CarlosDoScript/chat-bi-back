@@ -1,6 +1,5 @@
-﻿using Chat.Bi.Core.Constantes.ChatConfig;
-
-namespace Chat.Bi.Infrastructure.IA.Ollama;
+﻿
+namespace Chat.Bi.Infrastructure.IA.Llm.Ollama;
 
 public class OllamaService(
         IHttpClientFactory httpClientFactory,

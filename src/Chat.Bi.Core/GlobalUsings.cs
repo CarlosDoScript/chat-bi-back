@@ -2,3 +2,4 @@
 global using Chat.Bi.SharedKernel.Extensions;
 global using Chat.Bi.SharedKernel.Common;
 global using Chat.Bi.Core.Services;
+global using System.Data;

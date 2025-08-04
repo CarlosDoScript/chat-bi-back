@@ -1,20 +1,22 @@
-﻿using System.Diagnostics;
-using Chat.Bi.Application.Commands.Usuario.CriarContaUsuario;
+﻿using Chat.Bi.Application.Commands.Usuario.CriarContaUsuario;
+using Chat.Bi.Core.Factories;
 using Chat.Bi.Core.Repositories;
 using Chat.Bi.Core.Resolvers;
 using Chat.Bi.Core.Services;
 using Chat.Bi.Infrastructure.Auth;
 using Chat.Bi.Infrastructure.Configuration;
 using Chat.Bi.Infrastructure.Configuration.Constantes;
-using Chat.Bi.Infrastructure.IA.Factory;
+using Chat.Bi.Infrastructure.IA;
 using Chat.Bi.Infrastructure.IA.Factory.Interfaces;
-using Chat.Bi.Infrastructure.IA.Ollama;
+using Chat.Bi.Infrastructure.IA.Llm.Ollama;
 using Chat.Bi.Infrastructure.IA.QueryGenerator;
 using Chat.Bi.Infrastructure.IA.RagContexto;
 using Chat.Bi.Infrastructure.IA.Resolvers;
 using Chat.Bi.Infrastructure.Logging;
 using Chat.Bi.Infrastructure.Persistence;
 using Chat.Bi.Infrastructure.Persistence.Repositories;
+using Chat.Bi.Infrastructure.QueryExecutors;
+using Chat.Bi.Infrastructure.QueryExecutors.Executors;
 using Chat.Bi.SharedKernel.Configuration;
 using Chat.Bi.SharedKernel.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +25,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Polly;
 using Polly.Extensions.Http;
+using System.Diagnostics;
 
 namespace Chat.Bi.CrossCutting;
 
@@ -55,6 +58,14 @@ public static class DependencyInjection
         services.AddMemoryCache();
         ResolverRepository(services);
         ConfigurarModeloIa(services);
+        ConfigurarExecutors(services);
+    }
+
+    static void ConfigurarExecutors(IServiceCollection services)
+    {
+        services.AddScoped<IQueryExecutor, SqlServerQueryExecutor>();
+        services.AddScoped<IQueryExecutor, PostgreQueryExecutor>();
+        services.AddScoped<IQueryExecutorFactory, QueryExecutorFactory>();
     }
 
     static void ConfigurarModeloIa(IServiceCollection services)

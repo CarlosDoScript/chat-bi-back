@@ -20,3 +20,5 @@ global using Microsoft.Extensions.Caching.Memory;
 global using Chat.Bi.Infrastructure.Cache;
 global using Chat.Bi.Core.Constantes.ChatConfig;
 global using Chat.Bi.SharedKernel.Common;
+global using Chat.Bi.Core.Factories;
+global using System.Data;

@@ -1,4 +1,4 @@
-﻿namespace Chat.Bi.Infrastructure.IA.Factory;
+﻿namespace Chat.Bi.Infrastructure.IA;
 
 public class ModelosIaFactory(
     IEnumerable<IModelosIaService> services
